@@ -13,8 +13,23 @@ location = os.environ['LOCATION']
 
 # Create translation function
 def translate_text(original_text, target_language):
+    language_codes = {
+        "English": "en",
+        "Spanish": "es",
+        "French": "fr",
+        "German": "de",
+        "Italian": "it",
+        "Portuguese": "pt",
+        "Dutch": "nl",
+        "Russian": "ru",
+        "Chinese": "zh-Hans",
+        "Arabic": "ar"
+    }
+
+    target_language_code = language_codes.get(target_language, "en")
+
     path = '/translate?api-version=3.0'
-    target_language_parameter = '&to=' + target_language
+    target_language_parameter = '&to=' + target_language_code
     constructed_url = endpoint + path + target_language_parameter
 
     headers = {
@@ -38,7 +53,10 @@ iface = gr.Interface(
     fn=translate_text,
     inputs=[
         gr.Textbox(label="Original Text"),
-        gr.Dropdown(["en", "es", "fr", "de"], label="Target Language")
+        gr.Dropdown(
+            choices=["English", "Spanish", "French", "German", "Italian", "Portuguese", "Dutch", "Russian", "Chinese", "Arabic"],
+            label="Target Language"
+        )
     ],
     outputs="text",
     title="Translator App",
